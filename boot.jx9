@@ -1,0 +1,64 @@
+
+// Create a configuration using a JSON object
+$my_config =  {
+  bind_ip : "127.0.0.1",
+  config : "/etc/symisc/jx9.conf",
+  dbpath : "/usr/local/unqlite",
+  fork : true,
+  logappend : true,
+  logpath : "/var/log/chaindrive.log",
+  quiet : true,
+  port : 5100
+ };
+
+// Dump the JSON object
+print $my_config;
+
+// Write to disk
+$file = "config.json.txt";
+print "\n\n------------------\nWriting JSON object to disk file: '$file'\n";
+
+// Create the file
+$fp = fopen($file,'w+');
+if( !$fp )
+    exit("Cannot create $file");
+
+// Write the JSON object
+fwrite($fp,$my_config);
+
+// Close the file
+fclose($fp);
+
+// All done
+print "$file successfully created on: "..__DATE__..' '..__TIME__;
+
+// ---------------------- config_reader.jx9 ----------------------------
+
+$zFile = "config.json.txt";
+// Read the configuration file defined above
+$iSz = filesize($zFile); // Size of the whole file
+$fp = fopen($zFile,'r'); // Read-only mode
+if( !$fp ){
+   exit("Cannot open '$zFile'");
+}
+
+// Read the raw content
+$zBuf = fread($fp,$iSz);
+
+// decode the JSON object now
+$my_config = json_decode($zBuf);
+if( !$my_config ){
+    print "JSON decoding error\n";
+}else{
+  // Dump the JSON object
+  foreach( $my_config as $key,$value ){
+   print "$key ===> $value\n";
+  }
+
+  print "Bind IP is on : $my_config.bind_ip";
+}
+
+// Close the file
+fclose($fp);
+
+//print mkrand(0);
