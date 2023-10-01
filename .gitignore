@@ -1,4 +1,5 @@
 *.o
 quiz
 *.db
-
+.vscode
+espidf/blink/build/*

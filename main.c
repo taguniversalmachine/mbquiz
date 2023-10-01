@@ -1,5 +1,5 @@
 /*
- * C Quize
+ * C Quiz
  *
  *
  * The MIT License (MIT)
